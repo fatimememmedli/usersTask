@@ -1,6 +1,8 @@
 const express = require("express");
 require("dotenv").config();
 require("./src/config/db");
+const cors = require("cors");
+
 const bodyParser = require("body-parser");
 const app = express();
 const userRouter = require("./src/routers/userRouter.js");
@@ -8,7 +10,7 @@ const userRouter = require("./src/routers/userRouter.js");
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-
+app.use(cors());
 app.use("/", userRouter); // new
 
 // app.get("/", (req, res) => {
