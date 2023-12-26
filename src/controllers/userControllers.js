@@ -1,18 +1,99 @@
 const User = require("./../models/userModel");
-
+const jwt = require("jsonwebtoken");
 const postUser = async (req, res) => {
-  let findUser = await User.findOne({ id: req.body.id });
-  if (findUser) {
-    res.send("bele id li obj var");
-  } else {
+  const user = req.body
+
+
+try{
+
+
+  let findUserEmail = await User.findOne({ email:user.email });
+  let findUserUsername = await User.findOne({ username:user.username });
+  if (findUserEmail) {
+    res.status(201).send("This email already used!");
+  } 
+  if (findUserUsername) {
+    res.status(201).send("This username already used!");
+  }  {
     const newUser = new User(req.body);
     newUser.save();
+    res.status(200).send({
+      message:"Qeydiyyatdan kecdi"
+    })
   }
-};
+}catch{
+  err=> {
+    console.log(err)
+    return err
+  }
+}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+};
+const login = async (req, res) => {
+  const user = req.body
+
+try{
+
+
+  let findUserPass = await User.findOne({ password:user.password, username:user.username });
+  if (findUserPass ) {
+    const token = jwt.sign({password:user.password, username:user.username},
+      process.env.SECRET_TOKEN,
+      {
+        expiresIn:'1m'
+      }
+      )
+    
+    return res.status(200).send(token);
+
+  } else{
+    return  res.status(201).send("Invalid Username or Password!");
+  }
+   
+}catch{
+  err=> {
+    console.log(err)
+    return err
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+};
 const getAllUser = async (req, res) => {
   let allUser = await User.find({});
   res.send(allUser);
+  console.log(req.headers.authorization.split(" ")[1])
 };
 const getUserById = async (req, res) => {
   let id = req.params.id;
@@ -41,4 +122,5 @@ module.exports = {
   deleteUser,
   updateUser,
   putUser,
+  login
 };
