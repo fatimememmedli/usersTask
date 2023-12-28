@@ -93,7 +93,7 @@ try{
 const getAllUser = async (req, res) => {
   let allUser = await User.find({});
   res.send(allUser);
-  console.log(req.headers.authorization.split(" ")[1])
+  // console.log(req.headers.authorization.split(" ")[1])
 };
 const getUserById = async (req, res) => {
   let id = req.params.id;
