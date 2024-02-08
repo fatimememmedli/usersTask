@@ -20,10 +20,7 @@ const userSchema = mongoose.Schema(
     id: { type: String },
     isPublic: { type: Boolean },
     isAdmin: { type: Boolean, default: false },
-    bio: {
-      info: { type: String },
-      country: { type: String },
-    },
+    bio: { type: String },
     email: { type: String },
   },
   { collection: "Users", timestamps: true }
